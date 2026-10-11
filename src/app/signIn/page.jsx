@@ -2,10 +2,25 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "@/lib/auth-client";
 
 const SignInPage = () => {
     const [showPassword, setShowPassword] = useState(false);
 
+    const handleSignIn = async (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        const user = Object.fromEntries(formData.entries())
+
+
+
+
+        const { data, error } = await signIn.email({
+            ...user,
+            callbackURL: "/"
+        });
+
+    }
     return (
         <main className="flex min-h-screen items-center justify-center bg-green-50 px-4 py-10">
             <div className="w-full max-w-md">
@@ -37,7 +52,7 @@ const SignInPage = () => {
                 {/* Sign In Card */}
                 <div className="rounded-3xl border border-green-100 bg-white p-6 shadow-lg sm:p-8">
 
-                    <form className="space-y-5">
+                    <form onSubmit={handleSignIn} className="space-y-5">
 
                         {/* Email */}
                         <div>
@@ -49,7 +64,7 @@ const SignInPage = () => {
                             </label>
 
                             <input
-                                id="email"
+                                name="email"
                                 type="email"
                                 placeholder="আপনার ইমেইল লিখুন"
                                 className="input h-12 w-full rounded-xl border-gray-200 bg-white text-gray-900 outline-none focus:border-green-600 focus:outline-green-600"
@@ -68,7 +83,7 @@ const SignInPage = () => {
 
                             <div className="relative">
                                 <input
-                                    id="password"
+                                    name="password"
                                     type={showPassword ? "text" : "password"}
                                     placeholder="আপনার পাসওয়ার্ড লিখুন"
                                     className="input h-12 w-full rounded-xl border-gray-200 bg-white pr-16 text-gray-900 focus:border-green-600 focus:outline-green-600"
@@ -85,25 +100,7 @@ const SignInPage = () => {
                             </div>
                         </div>
 
-                        {/* Remember Me & Forgot Password */}
-                        <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-                            <label className="flex cursor-pointer items-center gap-2">
-                                <input
-                                    type="checkbox"
-                                    className="checkbox checkbox-sm border-gray-300 checked:border-green-700 checked:bg-green-700"
-                                />
-                                <span className="text-gray-600">
-                                    আমাকে মনে রাখুন
-                                </span>
-                            </label>
 
-                            <Link
-                                href="/forgot-password"
-                                className="font-semibold text-green-700 hover:text-green-900 hover:underline"
-                            >
-                                পাসওয়ার্ড ভুলে গেছেন?
-                            </Link>
-                        </div>
 
                         {/* Submit Button */}
                         <button

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
+import UserInfo from "./UserInfo";
 
 
 
@@ -36,21 +37,7 @@ const Navbar = () => {
                     </Link>
 
                     {/* Authentication Buttons */}
-                    <div className="flex shrink-0 items-center gap-2">
-                        <Link
-                            href="/signIn"
-                            className="rounded-lg border border-green-700 px-3 py-2 text-sm font-semibold text-green-800 transition hover:bg-green-50 sm:px-5"
-                        >
-                            সাইন ইন
-                        </Link>
-
-                        <Link
-                            href="/signUp"
-                            className="rounded-lg bg-green-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-green-800 sm:px-5"
-                        >
-                            সাইন আপ
-                        </Link>
-                    </div>
+                    <UserInfo></UserInfo>
                 </div>
 
                 {/* Category Navigation */}

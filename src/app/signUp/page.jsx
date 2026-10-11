@@ -2,13 +2,38 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signUp } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 const SignUpPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordError, setPasswordError] = useState("");
 
-    const handleSignUp = () => {
+    const handleSignUp = async (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        const user = Object.fromEntries(formData.entries())
+        if (user.password !== user.confirmPassword) {
+            setPasswordError("দুটি পাসওয়ার্ড মিলছে না।");
+            return;
+        }
 
+        setPasswordError("");
+
+        const { data, error } = await signUp.email({
+            ...user,
+            callbackURL: "/"
+        });
+        if (data) {
+            redirect('/')
+            console.log(data);
+
+        }
+        if (error) {
+            console.log(error);
+
+        }
     }
 
     return (
@@ -51,7 +76,7 @@ const SignUpPage = () => {
                             </label>
 
                             <input
-                                id="name"
+                                name="name"
                                 type="text"
                                 placeholder="আপনার পুরো নাম লিখুন"
                                 className="input h-12 w-full rounded-xl border-gray-300 bg-white text-gray-900 focus:border-green-600 focus:outline-green-600"
@@ -70,7 +95,7 @@ const SignUpPage = () => {
                             </label>
 
                             <input
-                                id="email"
+                                name="email"
                                 type="email"
                                 placeholder="আপনার ইমেইল লিখুন"
                                 className="input h-12 w-full rounded-xl border-gray-300 bg-white text-gray-900 focus:border-green-600 focus:outline-green-600"
@@ -90,7 +115,7 @@ const SignUpPage = () => {
 
                             <div className="relative">
                                 <input
-                                    id="password"
+                                    name="password"
                                     type={showPassword ? "text" : "password"}
                                     placeholder="একটি পাসওয়ার্ড তৈরি করুন"
                                     className="input h-12 w-full rounded-xl border-gray-300 bg-white pr-16 text-gray-900 focus:border-green-600 focus:outline-green-600"
@@ -124,7 +149,7 @@ const SignUpPage = () => {
 
                             <div className="relative">
                                 <input
-                                    id="confirmPassword"
+                                    name="confirmPassword"
                                     type={
                                         showConfirmPassword ? "text" : "password"
                                     }
@@ -149,6 +174,12 @@ const SignUpPage = () => {
                             </div>
                         </div>
 
+
+                        {passwordError && (
+                            <p className="mt-2 text-sm font-medium text-red-600">
+                                {passwordError}
+                            </p>
+                        )}
 
 
                         {/* Submit */}
