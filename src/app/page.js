@@ -3,9 +3,13 @@ import { connection } from "next/server";
 import ProductCard from "./components/ProductCard";
 import AllProducts from "./components/AllProducts";
 import Image from "next/image";
+import ScrollButton from "./components/ScrollButton";
 
 export default async function Home() {
-  // await connection();
+
+  const date = new Date().toLocaleDateString("bn-BD", {
+    dateStyle: "full"
+  })
 
   const res = await fetch(
     "https://openapi.programming-hero.com/api/bazardor/products"
@@ -29,6 +33,7 @@ export default async function Home() {
     .sort((a, b) => b.change.pct - a.change.pct)
     .slice(0, 6);
 
+
   return (
     <main className="min-h-screen bg-[#F7FAF7]">
 
@@ -43,7 +48,7 @@ export default async function Home() {
           {/* Left Side: Text */}
           <div className="relative z-10 w-full lg:w-1/2">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-green-50">
-              🇧🇩 বাংলাদেশের নিত্যপণ্যের বাজারদর
+              {date}
             </span>
 
             <h1 className="mt-6 text-3xl font-extrabold leading-tight sm:text-5xl lg:text-5xl xl:text-6xl">
@@ -58,13 +63,7 @@ export default async function Home() {
               চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
             </p>
 
-            <Link
-              href="#sob-ponno"
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-lime-300 px-6 py-3 font-bold text-green-950 transition hover:bg-lime-200"
-            >
-              সব পণ্য দেখুন
-              <span>↓</span>
-            </Link>
+            <ScrollButton></ScrollButton>
           </div>
 
           {/* Right Side: Image */}
