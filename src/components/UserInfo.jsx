@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signOut, useSession } from "@/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Bounce, toast } from "react-toastify";
 
 const UserInfo = () => {
     const { data: session } = useSession();
@@ -17,6 +18,18 @@ const UserInfo = () => {
         setShowMenu(false);
         router.push("/");
         router.refresh();
+
+        toast.success('Log Out', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
     };
 
     return (
