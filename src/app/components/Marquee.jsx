@@ -1,0 +1,42 @@
+import MarqueeText from "react-marquee-text"
+import "react-marquee-text/dist/styles.css"
+import React from 'react';
+
+const Marquee = async () => {
+    const res = await fetch("https://openapi.programming-hero.com/api/bazardor/products")
+    const allData = await res.json()
+
+
+    return (
+        <div className="py-2">
+            <MarqueeText direction='right' duration={10}>
+                {
+                    allData.map(data => <span className='mx-3' key={data.id}>
+                        <span className='mx-1'>{data.categoryIcon}</span>
+                        <span className='mx-1'>{data.nameBn}</span>
+                        <span className='mx-0.5'>{data.today}</span>
+                        <span className='mr-1'> টাকা/{data.unit}</span>
+                        <span
+                            className={`rounded-full mx-1 px-2.5 py-1 text-xs font-semibold ${data.change.pct > 0
+                                ? "bg-red-50 text-red-600"
+                                : data.change.pct < 0
+                                    ? "bg-green-50 text-green-700"
+                                    : "bg-gray-100 text-gray-500"
+                                }`}
+                        >
+                            {data.change.pct > 0
+                                ? "▲"
+                                : data.change.pct < 0
+                                    ? "▼"
+                                    : "—"}{" "}
+                            {Math.abs(data.change.pct).toFixed(1)}%
+                        </span>
+                    </span>)
+                }
+            </MarqueeText>
+
+        </div>
+    );
+};
+
+export default Marquee;

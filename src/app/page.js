@@ -1,69 +1,151 @@
+import Link from "next/link";
+import { connection } from "next/server";
+import ProductCard from "./components/ProductCard";
+import AllProducts from "./components/AllProducts";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+  // await connection();
+
+  const res = await fetch(
+    "https://openapi.programming-hero.com/api/bazardor/products"
+  );
+
+  // if (!res.ok) {
+  //   throw new Error("পণ্যের তথ্য লোড করা যায়নি");
+  // }
+
+  const allProducts = await res.json();
+
+  // যেসব পণ্যের দাম কমেছে
+  const downProducts = allProducts
+    .filter((product) => product.change.pct < 0)
+    .sort((a, b) => a.change.pct - b.change.pct)
+    .slice(0, 6);
+
+  // যেসব পণ্যের দাম বেড়েছে
+  const upProducts = allProducts
+    .filter((product) => product.change.pct > 0)
+    .sort((a, b) => b.change.pct - a.change.pct)
+    .slice(0, 6);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.js
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="min-h-screen bg-[#F7FAF7]">
+
+      {/* Hero Section */}
+      <section className="px-4 pt-6 sm:pt-10">
+        <div className="relative mx-auto flex max-w-7xl flex-col gap-8 overflow-hidden rounded-3xl bg-gradient-to-br from-green-900 via-green-800 to-emerald-700 px-6 py-10 text-white sm:px-10 sm:py-16 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-16">
+
+          {/* Background Shapes */}
+          <div className="absolute -right-16 -top-20 h-64 w-64 rounded-full bg-white/5" />
+          <div className="absolute -bottom-24 right-1/4 h-64 w-64 rounded-full bg-lime-300/10" />
+
+          {/* Left Side: Text */}
+          <div className="relative z-10 w-full lg:w-1/2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-green-50">
+              🇧🇩 বাংলাদেশের নিত্যপণ্যের বাজারদর
+            </span>
+
+            <h1 className="mt-6 text-3xl font-extrabold leading-tight sm:text-5xl lg:text-5xl xl:text-6xl">
+              বাজারের সঠিক দাম,
+              <br />
+              <span className="text-lime-300">
+                জানুন এক নজরে
+              </span>
+            </h1>
+
+            <p className="mt-5 max-w-xl text-sm leading-7 text-green-50 sm:text-base">
+              চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
+            </p>
+
+            <Link
+              href="#sob-ponno"
+              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-lime-300 px-6 py-3 font-bold text-green-950 transition hover:bg-lime-200"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              সব পণ্য দেখুন
+              <span>↓</span>
+            </Link>
+          </div>
+
+          {/* Right Side: Image */}
+          <div className="relative z-10 flex w-full items-center justify-center lg:w-1/2">
+            <Image
+              height={600}
+              width={600}
+              src="/assets/bazar-hero.png"
+              alt="বাংলাদেশের নিত্যপণ্যের বাজার"
+              priority
+              className="h-auto w-full max-w-sm object-contain sm:max-w-md lg:max-w-full"
+            />
+          </div>
+
+        </div>
+      </section>
+
+      {/* Price Increased */}
+      <section className="mx-auto max-w-7xl px-4 pt-12">
+        <div className="mb-5 flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-extrabold text-gray-900 sm:text-2xl">
+              <span className="mr-2 text-red-500">↗</span>
+              আজ দাম বেড়েছে
+            </h2>
+
+            <p className="mt-2 text-sm text-gray-500">
+              যেসব পণ্যের দামে ঊর্ধ্বগতি দেখা যাচ্ছে
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {upProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+
+      {/* Price Decreased */}
+      <section className="mx-auto max-w-7xl px-4 pt-12">
+        <div className="mb-5">
+          <h2 className="text-xl font-extrabold text-gray-900 sm:text-2xl">
+            <span className="mr-2 text-green-600">↘</span>
+            আজ দাম কমেছে
+          </h2>
+
+          <p className="mt-2 text-sm text-gray-500">
+            যেসব পণ্যের দামে নিম্নগতি দেখা যাচ্ছে
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {downProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* All Products */}
+      <section
+        id="sob-ponno"
+        className="mx-auto max-w-7xl px-4 pb-14 pt-14"
+      >
+        <div className="mb-6">
+          <p className="text-sm font-semibold text-green-700">
+            আপনার প্রয়োজনীয় সবকিছু
+          </p>
+
+          <h2 className="mt-2 text-2xl font-extrabold text-gray-900 sm:text-3xl">
+            সব পণ্য
+          </h2>
+        </div>
+
+        {/* Product Count, Sorting and Product Grid */}
+        <AllProducts products={allProducts} />
+
+        <p className="mt-8 text-center text-xs leading-6 text-gray-500">
+          বাজারের পরিস্থিতি ও স্থানভেদে পণ্যের দাম পরিবর্তিত হতে পারে।
+        </p>
+      </section>
+    </main>
   );
 }
