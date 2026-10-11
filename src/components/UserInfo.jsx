@@ -19,7 +19,7 @@ const UserInfo = () => {
         router.push("/");
         router.refresh();
 
-        toast.success('Log Out', {
+        toast.error('Sign Out', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
