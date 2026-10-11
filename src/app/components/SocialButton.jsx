@@ -6,6 +6,8 @@ const SocialButton = () => {
         const data = await signIn.social({
             provider: "google",
         });
+        console.log(data);
+
     }
 
     const handleGithub = async () => {
