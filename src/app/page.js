@@ -144,9 +144,7 @@ export default async function Home() {
         {/* Product Count, Sorting and Product Grid */}
         <AllProducts products={allProducts} />
 
-        <p className="mt-8 text-center text-xs leading-6 text-gray-500">
-          বাজারের পরিস্থিতি ও স্থানভেদে পণ্যের দাম পরিবর্তিত হতে পারে।
-        </p>
+
       </section>
     </main>
   );
