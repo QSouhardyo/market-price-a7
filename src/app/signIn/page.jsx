@@ -13,9 +13,6 @@ const SignInPage = () => {
         const formData = new FormData(e.target)
         const user = Object.fromEntries(formData.entries())
 
-
-
-
         const { data, error } = await signIn.email({
             ...user,
             callbackURL: "/"

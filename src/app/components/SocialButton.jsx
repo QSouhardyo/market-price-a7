@@ -1,11 +1,23 @@
+import { signIn } from '@/lib/auth-client';
 import React from 'react';
 
 const SocialButton = () => {
+    const handleSignInGoogle = async () => {
+        const data = await signIn.social({
+            provider: "google",
+        });
+    }
+
+    // const handleGithub = async() => {
+
+    // }
+
     return (
         <div>
             <button
+                onClick={handleSignInGoogle}
                 type="button"
-                className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
+                className="flex h-12 w-full items-center cursor-pointer justify-center gap-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
             >
                 <svg
                     viewBox="0 0 48 48"
@@ -38,8 +50,9 @@ const SocialButton = () => {
 
             {/* GitHub Sign In */}
             <button
+                onClick={handleGithub}
                 type="button"
-                className="mt-3 flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 transition hover:border-green-300 hover:bg-green-50"
+                className="mt-3 flex h-12 w-full items-center cursor-pointer justify-center gap-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 transition hover:border-green-300 hover:bg-green-50"
             >
                 <svg
                     viewBox="0 0 24 24"
