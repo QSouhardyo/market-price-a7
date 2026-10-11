@@ -1,11 +1,14 @@
 import MarqueeText from "react-marquee-text"
 import "react-marquee-text/dist/styles.css"
 import React from 'react';
+import { notFound } from "next/navigation";
 
 const Marquee = async () => {
     const res = await fetch("https://openapi.programming-hero.com/api/bazardor/products")
     const allData = await res.json()
-
+    if (!allData) {
+        notFound()
+    }
 
     return (
         <div className="py-2">
