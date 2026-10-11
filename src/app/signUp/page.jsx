@@ -30,7 +30,7 @@ const SignUpPage = () => {
         });
 
         if (data) {
-            toast.success('Login succesfully', {
+            toast.success('Login Successfully', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,

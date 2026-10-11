@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession, signOut, updateUser } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Bounce, toast } from "react-toastify";
 
 const ProfilePage = () => {
     const { data: session, isPending } = useSession();
@@ -64,6 +65,16 @@ const ProfilePage = () => {
     const handleSignOut = async () => {
         try {
             await signOut();
+            toast.success("SignOut Successfully", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+                transition: Bounce,
+            });
             router.push("/");
             router.refresh();
         } catch {

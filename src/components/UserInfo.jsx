@@ -14,22 +14,33 @@ const UserInfo = () => {
     const user = session?.user;
 
     const handleSignOut = async () => {
-        await signOut();
-        setShowMenu(false);
-        router.push("/");
-        router.refresh();
+        try {
+            await signOut();
 
-        toast.error('Sign Out', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
+            setShowMenu(false);
+            router.push("/");
+            router.refresh();
+
+            toast.success("SignOut Successfully", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+                transition: Bounce,
+            });
+        } catch (error) {
+            console.error("Sign Out Error:", error);
+
+            toast.error("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।", {
+                position: "top-right",
+                autoClose: 3000,
+                theme: "light",
+                transition: Bounce,
+            });
+        }
     };
 
     return (
@@ -40,12 +51,30 @@ const UserInfo = () => {
                     <button
                         type="button"
                         onClick={() => setShowMenu(!showMenu)}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-green-800 transition hover:bg-green-50"
+                        aria-expanded={showMenu}
+                        aria-label="User menu"
+                        className="flex items-center gap-2 rounded-xl px-2 py-2 text-sm font-semibold text-green-800 transition hover:bg-green-50 sm:px-3"
                     >
-                        <span className="max-w-32 truncate">
-                            {user.name}
+                        {/* Profile Picture */}
+                        {user.image ? (
+                            <img
+                                src={user.image}
+                                alt={user.name || "User"}
+                                referrerPolicy="no-referrer"
+                                className="h-9 w-9 shrink-0 rounded-full border-2 border-green-200 object-cover shadow-sm"
+                            />
+                        ) : (
+                            <div className="flex py-0.5 px-4 shrink-0 items-center justify-center rounded-xl border-2 border-green-200 text-green-100 text-sm font-bold uppercase bg-green-800">
+                                {user.name?.charAt(0) || "U"}
+                            </div>
+                        )}
+
+                        {/* User Name */}
+                        <span className="max-w-24 truncate sm:max-w-32">
+                            {user.name || "ব্যবহারকারী"}
                         </span>
 
+                        {/* Dropdown Arrow */}
                         <span className="text-xs">
                             {showMenu ? "▲" : "▼"}
                         </span>
@@ -53,37 +82,49 @@ const UserInfo = () => {
 
                     {/* Dropdown Menu */}
                     {showMenu && (
-                        <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-green-100 bg-white p-2 shadow-lg">
-
-                            {/* User Name & Email */}
-                            <div className="border-b border-gray-100 px-3 py-3">
-                                <p className="truncate text-sm font-bold text-gray-900">
-                                    {user.name}
-                                </p>
-
-                                <p className="mt-1 truncate text-xs text-gray-500">
-                                    {user.email}
-                                </p>
-                            </div>
-
-                            {/* My Profile */}
-                            <Link
-                                href="/profile"
-                                onClick={() => setShowMenu(false)}
-                                className="mt-2 block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-green-50 hover:text-green-800"
-                            >
-                                আমার প্রোফাইল
-                            </Link>
-
-                            {/* Sign Out */}
+                        <>
+                            {/* Outside Click Area */}
                             <button
                                 type="button"
-                                onClick={handleSignOut}
-                                className="mt-1 w-full rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
-                            >
-                                সাইন আউট
-                            </button>
-                        </div>
+                                aria-label="Close menu"
+                                onClick={() => setShowMenu(false)}
+                                className="fixed inset-0 z-40 cursor-default"
+                            />
+
+                            <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-green-100 bg-white p-2 shadow-xl">
+                                {/* User Name & Email */}
+                                <div className="flex items-center gap-3 border-b border-gray-100 px-3 py-3">
+
+                                    <div className="min-w-0">
+                                        <p className="truncate text-sm font-bold text-gray-900">
+                                            {user.name || "ব্যবহারকারী"}
+                                        </p>
+
+                                        <p className="mt-1 truncate text-xs text-gray-500">
+                                            {user.email}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* My Profile */}
+                                <Link
+                                    href="/profile"
+                                    onClick={() => setShowMenu(false)}
+                                    className="mt-2 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-green-50 hover:text-green-800"
+                                >
+                                    আমার প্রোফাইল
+                                </Link>
+
+                                {/* Sign Out */}
+                                <button
+                                    type="button"
+                                    onClick={handleSignOut}
+                                    className="mt-1 w-full rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                                >
+                                    সাইন আউট
+                                </button>
+                            </div>
+                        </>
                     )}
                 </div>
             ) : (
