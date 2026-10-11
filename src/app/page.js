@@ -5,6 +5,7 @@ import AllProducts from "../components/AllProducts";
 import Image from "next/image";
 import ScrollButton from "../components/ScrollButton";
 import { notFound } from "next/navigation";
+import DateDisplay from "@/components/DateDisplay";
 
 export default async function Home() {
 
@@ -50,8 +51,8 @@ export default async function Home() {
 
           {/* Left Side: Text */}
           <div className="relative z-10 w-full lg:w-1/2">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-green-50">
-              {date}
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white">
+              <DateDisplay></DateDisplay>
             </span>
 
             <h1 className="mt-6 text-3xl font-extrabold leading-tight sm:text-5xl lg:text-5xl xl:text-6xl">
