@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { connection } from "next/server";
-import ProductCard from "./components/ProductCard";
-import AllProducts from "./components/AllProducts";
+import ProductCard from "../components/ProductCard";
+import AllProducts from "../components/AllProducts";
 import Image from "next/image";
-import ScrollButton from "./components/ScrollButton";
+import ScrollButton from "../components/ScrollButton";
+import { notFound } from "next/navigation";
 
 export default async function Home() {
 
@@ -21,7 +22,9 @@ export default async function Home() {
 
   const allProducts = await res.json();
 
-  // যেসব পণ্যের দাম কমেছে
+  if (!allProducts) {
+    notFound()
+  }
   const downProducts = allProducts
     .filter((product) => product.change.pct < 0)
     .sort((a, b) => a.change.pct - b.change.pct)

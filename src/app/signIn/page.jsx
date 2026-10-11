@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "@/lib/auth-client";
-import SocialButton from "../components/SocialButton";
+import SocialButton from "@/components/SocialButton";
+import { Bounce, toast } from "react-toastify";
+
 
 const SignInPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +19,38 @@ const SignInPage = () => {
             ...user,
             callbackURL: "/"
         });
+
+        if (data) {
+            toast.success('Login succesfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+        }
+
+        if (error) {
+            toast.error('Invalid email or password', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+
+            // console.log(error);
+
+
+        }
 
     }
     return (

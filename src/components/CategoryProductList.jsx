@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import ProductCard from "@/app/components/ProductCard";
+import ProductCard from "@/components/ProductCard";
 
-const CategorySort = ({ products }) => {
+const CategoryProductList = ({ products }) => {
     const [sortOrder, setSortOrder] = useState("default");
 
     // Sorting
@@ -55,4 +55,4 @@ const CategorySort = ({ products }) => {
     );
 };
 
-export default CategorySort;
+export default CategoryProductList;

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import React from 'react';
 
 // বাংলা সংখ্যায় কনভার্ট
@@ -27,20 +28,13 @@ const ProductDetailsPage = async ({ params }) => {
         `https://openapi.programming-hero.com/api/bazardor/products/${productId}`
 
     );
+
+    if (!res.ok) {
+        notFound();
+    }
     const product = await res.json();
 
-    if (!product || product.error) {
-        return (
-            <div className="min-h-[60vh] flex items-center justify-center">
-                <div className="text-center">
-                    <p className="text-xl font-bold mb-4">পণ্য পাওয়া যায়নি</p>
-                    <Link href="/" className="btn btn-primary">
-                        হোম পেজে ফিরে যান
-                    </Link>
-                </div>
-            </div>
-        );
-    }
+
 
     const markets = product.markets || [];
     const mins = markets.map((m) => m.min).filter((v) => v != null);

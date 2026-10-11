@@ -1,10 +1,14 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import React from 'react';
 
 const NavLinks = async () => {
     const res = await fetch('https://openapi.programming-hero.com/api/bazardor/categories')
     const categories = await res.json()
-    // console.log(categories);
+
+    if (!categories) {
+        notFound()
+    }
 
     return (
         <div>

@@ -4,7 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { signUp } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
-import SocialButton from "../components/SocialButton";
+import SocialButton from "@/components/SocialButton";
+import { Bounce, toast } from "react-toastify";
+
 
 const SignUpPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -26,15 +28,27 @@ const SignUpPage = () => {
             ...user,
             callbackURL: "/"
         });
+
+        if (data) {
+            toast.success('Login succesfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+        }
+
         if (data) {
             redirect('/')
-            console.log(data);
+
 
         }
-        if (error) {
-            console.log(error);
 
-        }
     }
 
     return (

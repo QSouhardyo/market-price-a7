@@ -1,15 +1,42 @@
-import CategoryProductList from "@/app/components/CategoryProductList";
-
+import CategoryProductList from "@/components/CategoryProductList";
+import { notFound } from "next/navigation";
 
 const CategoryProductPage = async ({ params }) => {
     const { categoryId } = await params;
 
+    // সব ক্যাটাগরির তথ্য নিয়ে আসা
+    const categoryRes = await fetch(
+        "https://openapi.programming-hero.com/api/bazardor/categories"
+    );
+
+    if (!categoryRes.ok) {
+        throw new Error("ক্যাটাগরির তথ্য লোড করা যায়নি");
+    }
+
+    const categories = await categoryRes.json();
+
+    // ক্যাটাগরির তালিকা থেকে URL সঠিক কি না যাচাই করা
+    const isValidCategory = categories.some(
+        (category) => category.slug === categoryId
+    );
+
+    // ভুল ক্যাটাগরি হলে 404 পেজ দেখানো
+    if (!isValidCategory) {
+        notFound();
+    }
+
+    // নির্দিষ্ট ক্যাটাগরির পণ্য নিয়ে আসা
     const res = await fetch(
         `https://openapi.programming-hero.com/api/bazardor/products?category=${categoryId}`
     );
 
+    if (!res.ok) {
+        throw new Error("পণ্যের তথ্য লোড করা যায়নি");
+    }
+
     const products = await res.json();
 
+    // ক্যাটাগরির বাংলা নাম
     const categoryNames = {
         "dim-dui": "ডিম ও দুধ",
         chal: "চাল",
@@ -27,7 +54,7 @@ const CategoryProductPage = async ({ params }) => {
         <main className="min-h-screen bg-gray-50">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:py-10">
 
-                {/* Category Heading */}
+                {/* ক্যাটাগরির শিরোনাম */}
                 <div className="flex flex-col gap-4 rounded-xl border border-green-100 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <p className="text-sm font-medium text-green-700">
@@ -44,13 +71,14 @@ const CategoryProductPage = async ({ params }) => {
                     </div>
                 </div>
 
-                {/* Sorting and Product Cards */}
+                {/* পণ্যের তালিকা */}
                 <CategoryProductList products={products} />
 
-                {/* Disclaimer */}
+                {/* সতর্কবার্তা */}
                 <p className="mt-8 text-center text-xs text-gray-500">
                     বাজারের পরিস্থিতি অনুযায়ী পণ্যের দাম পরিবর্তিত হতে পারে।
                 </p>
+
             </div>
         </main>
     );

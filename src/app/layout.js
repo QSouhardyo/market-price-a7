@@ -1,7 +1,7 @@
 import { Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Marquee from "./components/Marquee";
+import Navbar from "../components/Navbar";
+import Marquee from "../components/Marquee";
 import { ToastContainer } from "react-toastify";
 
 const notoSherifBengali = Noto_Serif_Bengali({
