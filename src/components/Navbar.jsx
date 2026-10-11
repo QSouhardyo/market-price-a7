@@ -3,9 +3,6 @@ import Link from "next/link";
 import NavLinks from "./NavLinks";
 import UserInfo from "./UserInfo";
 
-
-
-
 const Navbar = () => {
 
 
