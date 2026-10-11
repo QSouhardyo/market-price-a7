@@ -8,9 +8,11 @@ const SocialButton = () => {
         });
     }
 
-    // const handleGithub = async() => {
-
-    // }
+    const handleGithub = async () => {
+        const data = await signIn.social({
+            provider: "github"
+        })
+    }
 
     return (
         <div>
