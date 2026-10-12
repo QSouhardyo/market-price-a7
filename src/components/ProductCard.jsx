@@ -37,7 +37,7 @@ const ProductCard = ({ product }) => {
 
                         <div className="mt-1 flex items-baseline gap-1">
                             <span className="text-2xl font-extrabold text-green-800">
-                                ৳{product.today}
+                                ৳{product.today.toLocaleString("bn-BD")}
                             </span>
 
                             <span className="text-sm text-gray-500">
@@ -58,7 +58,7 @@ const ProductCard = ({ product }) => {
                             : product.change.pct < 0
                                 ? "▼"
                                 : "—"}{" "}
-                        {Math.abs(product.change.pct).toFixed(1)}%
+                        {(product.change.pct.toLocaleString("bn-BD"))}%
                     </span>
                 </div>
 

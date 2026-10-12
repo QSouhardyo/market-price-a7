@@ -17,7 +17,7 @@ const Marquee = async () => {
                     allData.map(data => <span className='mx-3' key={data.id}>
                         <span className='mx-1'>{data.categoryIcon}</span>
                         <span className='mx-1'>{data.nameBn}</span>
-                        <span className='mx-0.5'>{data.today}</span>
+                        <span className='mx-0.5'>{data.today.toLocaleString("bn-BD")}</span>
                         <span className='mr-1'> টাকা/{data.unit}</span>
                         <span
                             className={`rounded-full mx-1 px-2.5 py-1 text-xs font-semibold ${data.change.pct > 0
@@ -32,7 +32,7 @@ const Marquee = async () => {
                                 : data.change.pct < 0
                                     ? "▼"
                                     : "—"}{" "}
-                            {Math.abs(data.change.pct).toFixed(1)}%
+                            {data.change.pct.toLocaleString("bn-BD")}%
                         </span>
                     </span>)
                 }
